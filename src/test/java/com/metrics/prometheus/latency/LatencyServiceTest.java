@@ -17,8 +17,11 @@ class LatencyServiceTest {
   @Test
   void buildTimer() {
     // Given
-    Histogram.Timer myTimer = underTest
+    Histogram.Timer getMethodTimer = underTest
         .startTimerWithLabelValues(MethodValues.GET, "http://localhost:9090/api/v1/happy");
+
+    Histogram.Timer postMethodTimer = underTest
+        .startTimerWithLabelValues(MethodValues.POST, "http://localhost:9090/api/v1/happy");
 
     // When
     try {
@@ -26,11 +29,13 @@ class LatencyServiceTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     } finally {
-      myTimer.observeDuration();
+      getMethodTimer.observeDuration();
+      postMethodTimer.observeDuration();
     }
 
     // Then
-    System.out.println(myTimer);
+    System.out.println(getMethodTimer);
+    System.out.println(postMethodTimer);
     System.out.println(underTest);
   }
 }
