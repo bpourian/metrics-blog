@@ -1,18 +1,13 @@
 package com.metrics.prometheus.foundation;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import io.prometheus.client.Histogram;
-import io.prometheus.client.Histogram.Builder;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PublisherTest {
 
   // under test
-  private Publisher underTest;
+  private Latency underTest;
 
   // test constants
   String name = "my_latency_test";
@@ -31,7 +26,7 @@ class PublisherTest {
   void buildTimer() {
 
     // Given
-    underTest = new Publisher(name, description, labels, buckets);
+    underTest = new Latency(name, description, labels, buckets);
 
     // When
 

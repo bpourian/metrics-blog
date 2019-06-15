@@ -1,9 +1,6 @@
-package com.metrics.prometheus.foundation;
+package com.metrics.prometheus.latency;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
-import io.prometheus.client.Histogram;
 
 public class FoundationModule extends AbstractModule {
 
