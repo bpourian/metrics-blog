@@ -1,0 +1,67 @@
+*.class
+*.versionsBackup
+
+# vi
+*.sw[op]
+tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# Random
+.history
+*.log
+dist
+logs
+target
+lib
+data
+
+
+.idea
+*.iml
+out
+.idea_modules
+
+local-pseudo-archive/
+/archive/
+/applications/card/archive/
+/local-psuedo-archive/
+**/src/generated/
+
+node
+node_modules
+bower_components
+
+buildtools
+dependency-reduced-pom.xml
+
+.DS_Store
+
+# H2 runtime file
+mem.h2.db
+
+# Ignore any local configuration files
+/*.properties
+
+scripts/*.csv
+
+tooling/
+random.seed
+
+.java-version
+
+/logback.xml
+
+# Gradle
+gradlew
+gradlew.bat
+.gradle/
+build/
+gradle
+
+# VSCode
+.factorypath
