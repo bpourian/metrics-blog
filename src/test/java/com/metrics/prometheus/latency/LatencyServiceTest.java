@@ -4,7 +4,7 @@ import io.prometheus.client.Histogram;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PublisherTest {
+class LatencyServiceTest {
 
   // under test
   private LatencyService underTest;
