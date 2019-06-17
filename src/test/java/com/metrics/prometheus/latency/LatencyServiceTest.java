@@ -6,53 +6,50 @@ import io.prometheus.client.Histogram;
 import io.prometheus.client.Histogram.Timer;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class LatencyServiceTest {
 
   private LatencyService underTest;
 
-  @BeforeEach
-  void setUp() {
-    underTest = new LatencyService();
-  }
-
   @Test
   void shouldObserveDurationData() {
     // given
+    underTest = new LatencyService();
+
+    List<Integer> sleep = Arrays.asList(1000, 2000, 3000, 3000);
 
     // when
-    List<Integer> sleep = Arrays.asList(1000, 2000, 3000, 4000);
-    Timer getMethodTimer = underTest.startTimerWithLabelValues(MethodValues.GET);
-
     sleep.forEach(milliseconds -> {
+      Histogram.Timer getMethodTimer = underTest.startTimerWithLabelValues(MethodValues.GET);
+
       try {
         Thread.sleep(milliseconds);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      underTest.getLatencyHistogram().observe(getMethodTimer.observeDuration());
+      System.out.println(getMethodTimer.observeDuration());
 
     });
-    double actualValue = underTest.getLatencyHistogram().collect().get(0).samples.get(4).value;
-    String actualString = underTest.getLatencyHistogram().collect().get(0).samples.get(4).labelValues.get(0);
 
-    assertThat(actualValue).isEqualTo(2.0D);
-    assertThat(actualValue).isNotEqualTo(1.0D);
-
-    assertThat(actualString).isEqualTo("GET");
-    assertThat(actualString).isNotEqualTo("");
-
+    // then
+    assertThat(underTest.getLatencyHistogram().collect().get(0).samples.get(3).value).isEqualTo(1);
+//    assertBucketValueIsEqualToExpected(0.5, 0.0);
+//    assertBucketValueIsEqualToExpected(1.0, 0.0);
+//    assertBucketValueIsEqualToExpected(2.0, 1.0);
+//    assertBucketValueIsEqualToExpected(3.0, 1.0);
+//    assertBucketValueIsEqualToExpected(4.0, 2.0);
   }
 
-  //      System.out.println(getMethodTimer.observeDuration());
-//      System.out.println(myService.getLatencyHistogram().collect().get(0).toString());
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(3));
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(3).labelValues);
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(3).value);
+//  private void assertBucketValueIsEqualToExpected(double bucket, double expected) {
+//    underTest.getLatencyHistogram().collect().get(0).samples
+//        .forEach(item -> {
+//          System.out.println(item);
+//          if (item.labelValues.contains(Double.toString(bucket))) {
+//            assertThat(item.value).isEqualTo(expected);
+//          }
+//        });
+//    System.out.println(underTest.getLatencyHistogram().collect());
 //
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(4));
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(4).labelValues);
-//      System.out.println(underTest.getLatencyHistogram().collect().get(0).samples.get(4).value);
+//  }
 }

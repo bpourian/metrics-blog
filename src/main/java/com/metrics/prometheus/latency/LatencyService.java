@@ -20,9 +20,8 @@ public class LatencyService {
         .name(API_REQUEST_LATENCY_MILLIS)
         .help(REQUEST_LATENCY_IN_MILLISECONDS)
         .labelNames(METHOD)
-        .buckets(0.25D, 0.5D, 1D, 2D, 3.5D)
+        .buckets(0.5D, 1D, 2D, 3D, 4D)
         .register();
-
   }
 
 
