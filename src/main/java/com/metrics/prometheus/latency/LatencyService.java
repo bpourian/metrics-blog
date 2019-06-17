@@ -26,7 +26,7 @@ public class LatencyService {
         .help(REQUEST_LATENCY_IN_MILLISECONDS)
         .labelNames(METHOD)
         .buckets(0.25D, 0.5D, 1D, 2D)
-        .register(registry);
+        .register();
 
   }
 

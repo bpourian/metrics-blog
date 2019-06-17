@@ -1,11 +1,9 @@
 package com.metrics.prometheus.latency;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import io.prometheus.client.Collector;
-import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Collector.MetricFamilySamples;
 import io.prometheus.client.Histogram;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class LatencyServiceTest {
 
   private LatencyService underTest;
-  private CollectorRegistry registry;
+//  private CollectorRegistry registry;
 
   @BeforeEach
   void setUp() {
@@ -28,47 +26,66 @@ class LatencyServiceTest {
 
     // When
 
-    List<Integer> sleep = Arrays.asList(200, 450, 900, 1800, 3000);
+    List<Integer> sleep = Arrays.asList(200, 200, 200, 450,450,450, 900, 1800, 3000);
 
     sleep.forEach(milliseconds -> {
 
+
+
       try {
+        underTest.startTimerWithLabelValues(MethodValues.GET);
+        underTest.startTimerWithLabelValues(MethodValues.POST);
         Thread.sleep(milliseconds);
       } catch (InterruptedException e) {
         e.printStackTrace();
       } finally {
-        getMethodTimer.observeDuration();
+        System.out.println(getMethodTimer.observeDuration());
         postMethodTimer.observeDuration();
       }
     });
 
     // Then
 
-    underTest.getRegistry();
-//    System.out.println(underTest.getCount(MethodValues.GET));
-//    System.out.println(underTest.getCount(MethodValues.POST));
+//    Enumeration<MetricFamilySamples> sample = underTest.getRegistry().metricFamilySamples();
+//    List<MetricFamilySamples> sample2 = underTest.getLatencyHistogram().collect();
 
-    System.out.println(getMethodTimer);
-    System.out.println(postMethodTimer);
+
+    underTest.getLatencyHistogram().collect().get(0).samples.forEach(t -> {
+      System.out.println(t);
+      System.out.println("--------------");
+    } );
+
+
+
+
+//    System.out.println(underTest.getRegistry().getSampleValue("api_request_latency_millis"));
+
+//    System.out.println(getMethodTimer);
+//    System.out.println(postMethodTimer);
     System.out.println(underTest.getLatencyHistogram());
-    assertThat(underTest.getLatencyHistogram().collect().get(0)).isEqualTo(null);
+//    assertThat(underTest.getLatencyHistogram().collect().get(0)).isEqualTo(null);
   }
 
-  public CollectorRegistry getRegistry() {
-    return registry;
+  @Test
+  void shouldObserveDurationData() {
+    // given
+
+
+    // when
+
+
+    // then
+    Histogram.Timer apiTimer = publisher.apiCallTimer(ApiName.QUOTE);
+
+//    apiTimer.observeDuration();
+
+    publisher.getCurrencyCloudInvocationDuration().collect().get(0).samples.forEach(i -> {
+      if (i.labelValues.contains("0.25")) {
+
+        System.out.println(i.labelValues);
+      }
+
+
   }
 
-  public double getCount(MethodValues method) {
-    return registry.getSampleValue(method.toString());
-  }
-
-  public double getSum(MethodValues method) {
-    return registry.getSampleValue(method.toString());
-  }
-
-  public double getBucket(double b, String labelName) {
-    return registry.getSampleValue(labelName,
-        new String[]{"le"},
-        new String[]{Collector.doubleToGoString(b)});
-  }
 }
