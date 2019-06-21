@@ -8,12 +8,10 @@ public class LatencyService {
 
   private final Histogram latencyHistogram;
 
-  public static final String API_REQUEST_LATENCY_MILLIS = "api_request_latency_millis";
-  public static final String REQUEST_LATENCY_IN_MILLISECONDS = "Request latency in milliseconds";
-  public static final String METHOD = "method";
-  public static final String ENDPOINT = "endpoint";
-
-
+  private static final String API_REQUEST_LATENCY_MILLIS = "api_request_latency_millis";
+  private static final String REQUEST_LATENCY_IN_MILLISECONDS = "Request latency in milliseconds";
+  private static final String METHOD = "method";
+  
   public LatencyService() {
 
     this.latencyHistogram = Histogram.build()
