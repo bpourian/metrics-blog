@@ -2,10 +2,10 @@
 
 What is latency and why do we we want to measure it?
 
-Latency is the the time between a user invoked action and the resulting response. 
+Latency is the time between a user invoked action and the resulting response. 
 It gives us an expression of how much time it takes for a packet of data to travel within a network.
 
-To measure this I am going to user Prometheus as it offers a range of metrics. 
+To measure latency I will be using Prometheus as it offers a range of options.
 I have provided a very simple demonstration in a unit test on how you could gather data by adding simple 
 Prometheus methods to your code in this repo.
 
@@ -33,10 +33,10 @@ is the buckets .
 Buckets, as the name suggests collect data and provide you with a count. Using the prometheus 
 api you can easily access this data and display it on something like `Grafana`.
 
-The above buckets are measured in milliseconds and represent a double variable. Simply put, the first bucket will 
+The above buckets are labelled in milliseconds and represent a double data type. Simply put, the first bucket will 
 collect all the calls that have been made and completed in half a second and so forth.
 
-Once you have instantiated a Histogram object then you can start a time with a specific label such so:
+Once you have instantiated a `Histogram` object then you can start a specific timer with a label like so:
 
 ``````
 Histogram.timer myTimer = myHistogram.labels(method.toString())
